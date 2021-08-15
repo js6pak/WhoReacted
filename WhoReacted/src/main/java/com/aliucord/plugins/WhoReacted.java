@@ -47,10 +47,12 @@ import com.google.android.material.chip.Chip;
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 import c.a.i.c1;
 import c.a.y.a0;
 import c.f.g.f.c;
+import rx.Subscription;
 import rx.functions.Action1;
 
 public class WhoReacted extends Plugin {
@@ -62,7 +64,7 @@ public class WhoReacted extends Plugin {
         var manifest = new Manifest();
         manifest.authors = new Manifest.Author[]{new Manifest.Author("6pak", 141580516380901376L)};
         manifest.description = "WhoReacted";
-        manifest.version = "0.1.0";
+        manifest.version = "0.1.1";
         manifest.description = "See the avatars of the users who reacted to a message.";
         manifest.updateUrl = "https://raw.githubusercontent.com/js6pak/aliucord-plugins/builds/updater.json";
         return manifest;
@@ -86,7 +88,10 @@ public class WhoReacted extends Plugin {
 
                     Message message = reactionsEntry.getMessage();
 
-                    if (message.getReactionsMap().size() > 10) {
+                    logger.verbose(String.format("processReactions started (reactionsEntry: {%s})", reactionsEntry));
+
+                    if (message.getReactions().size() > 10) {
+                        logger.verbose("skipped because message had too much reaction emojis");
                         return;
                     }
 
@@ -99,8 +104,9 @@ public class WhoReacted extends Plugin {
                     }
 
                     int i = 0;
-                    for (MessageReaction messageReaction : message.getReactionsMap().values()) {
+                    for (MessageReaction messageReaction : message.getReactions()) {
                         if (messageReaction.a() >= 100) {
+                            logger.verbose("skipped reaction had too much users");
                             continue;
                         }
 
@@ -126,15 +132,15 @@ public class WhoReacted extends Plugin {
                                 layout.removeViews(2, layout.getChildCount() - 2);
                             }
 
+                            int size = users.getUsers().size();
+                            if (size <= 0 || size >= 100) {
+                                return;
+                            }
+
                             c roundingParams = new c(); // RoundingParams
                             roundingParams.b = true; // setRoundAsCircle
 
                             int x = 0;
-
-                            int size = users.getUsers().size();
-                            if (size >= 100) {
-                                return;
-                            }
 
                             for (User user : users.getUsers().values()) {
                                 if (x >= 5) {
@@ -174,20 +180,33 @@ public class WhoReacted extends Plugin {
                         if (reactions.containsKey(message.getId())) {
                             Map<String, StoreMessageReactions.EmojiResults> messageReactions = reactions.get(message.getId());
 
-                            if (messageReactions != null && messageReactions.containsKey(messageReaction.b().d())) {
-                                results = messageReactions.get(messageReaction.b().d());
+                            if (messageReactions != null && messageReactions.containsKey(messageReaction.b().c())) {
+                                results = messageReactions.get(messageReaction.b().c());
                             }
                         }
 
-                        if (results == null) {
-                            RxUtils.subscribe(StoreStream.Companion.getMessageReactions().observeMessageReactions(message.getChannelId(), message.getId(), messageReaction.b()), RxUtils.createActionSubscriber(result -> {
+                        if (!(results instanceof StoreMessageReactions.EmojiResults.Users)) {
+                            AtomicReference<Subscription> subscriptionReference = new AtomicReference<>();
+                            subscriptionReference.set(RxUtils.subscribe(StoreStream.Companion.getMessageReactions().observeMessageReactions(message.getChannelId(), message.getId(), messageReaction.b()), RxUtils.createActionSubscriber(result -> {
                                 if (result instanceof StoreMessageReactions.EmojiResults.Users) {
-                                    logger.debug("Fetched reaction users");
-                                    new Handler(Looper.getMainLooper()).post(() -> refresh.call((StoreMessageReactions.EmojiResults.Users) result));
+                                    StoreMessageReactions.EmojiResults.Users users = (StoreMessageReactions.EmojiResults.Users) result;
+
+                                    if (users.getChannelId() != message.getChannelId() || users.component3() != message.getId() || !users.getEmoji().equals(messageReaction.b())) {
+                                        return;
+                                    }
+
+                                    logger.verbose("Fetched reaction users: " + users);
+
+                                    Subscription subscription = subscriptionReference.get();
+                                    if (subscription != null) {
+                                        subscription.unsubscribe();
+                                    }
+
+                                    new Handler(Looper.getMainLooper()).post(() -> refresh.call(users));
                                 }
-                            }));
-                        } else if (results instanceof StoreMessageReactions.EmojiResults.Users) {
-                            logger.debug("Got reaction users from cache");
+                            }, ex -> logger.error("Error during reaction fetch", ex), null)));
+                        } else {
+                            logger.verbose("Got reaction users from cache: " + results);
                             refresh.call((StoreMessageReactions.EmojiResults.Users) results);
                         }
                     }

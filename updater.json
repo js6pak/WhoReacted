@@ -4,6 +4,6 @@
     "build": "https://raw.githubusercontent.com/js6pak/aliucord-plugins/builds/%s.zip"
   },
   "WhoReacted": {
-    "version": "0.1.0"
+    "version": "0.1.1"
   }
 }
