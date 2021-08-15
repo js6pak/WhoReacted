@@ -5,5 +5,8 @@
   },
   "WhoReacted": {
     "version": "0.1.1"
+  },
+  "ValidUser": {
+    "version": "0.1.0"
   }
 }

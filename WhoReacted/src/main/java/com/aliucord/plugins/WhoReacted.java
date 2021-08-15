@@ -71,7 +71,7 @@ public class WhoReacted extends Plugin {
     }
 
     @Override
-    public void start(Context context) throws NoSuchFieldException {
+    public void start(Context context) throws NoSuchFieldException, NoSuchMethodException {
         Field bindingField = WidgetChatListAdapterItemReactions.class.getDeclaredField("binding");
         bindingField.setAccessible(true);
 
@@ -79,9 +79,7 @@ public class WhoReacted extends Plugin {
         reactionsField.setAccessible(true);
 
         patcher.patch(
-                WidgetChatListAdapterItemReactions.class,
-                "processReactions",
-                new Class<?>[]{ReactionsEntry.class},
+                WidgetChatListAdapterItemReactions.class.getDeclaredMethod("processReactions", ReactionsEntry.class),
                 new PinePatchFn(callFrame -> {
                     WidgetChatListAdapterItemReactions _this = (WidgetChatListAdapterItemReactions) callFrame.thisObject;
                     ReactionsEntry reactionsEntry = (ReactionsEntry) callFrame.args[0];
