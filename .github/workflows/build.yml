@@ -38,7 +38,7 @@ jobs:
         run: |
           echo "$ANDROID_HOME/build-tools/30.0.3" >> $GITHUB_PATH
           mkdir -p ~/bin
-          wget https://github.com/Aliucord/buildtool/releases/download/v0.1.2/buildtool -P ~/bin
+          wget https://github.com/Aliucord/buildtool/releases/download/v0.2.3/buildtool -P ~/bin
           chmod +x ~/bin/buildtool
           chmod +x $GITHUB_WORKSPACE/src/gradlew
           jq \
