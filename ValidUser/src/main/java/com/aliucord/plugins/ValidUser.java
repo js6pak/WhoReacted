@@ -35,7 +35,6 @@ import com.discord.utilities.rest.RestAPI;
 import com.discord.utilities.textprocessing.node.UserMentionNode;
 
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
 import retrofit2.HttpException;
@@ -77,15 +76,11 @@ public class ValidUser extends Plugin {
                         if (!users.containsKey(userId)) {
                             // TODO find a way to make this non blocking
                             AtomicReference<Pair<com.discord.api.user.User, Throwable>> resultBlockingReference = new AtomicReference<>();
-                            CountDownLatch latch = new CountDownLatch(1);
 
                             try {
                                 new Thread(() -> {
                                     resultBlockingReference.set(RxUtils.getResultBlocking(RestAPI.Companion.getApi().userGet(userId)));
-                                    latch.countDown();
-                                }).start();
-
-                                latch.await();
+                                }).join();
                             } catch (InterruptedException e) {
                                 logger.error(e);
                                 return;
