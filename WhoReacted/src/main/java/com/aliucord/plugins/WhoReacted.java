@@ -64,7 +64,7 @@ public class WhoReacted extends Plugin {
         var manifest = new Manifest();
         manifest.authors = new Manifest.Author[]{new Manifest.Author("6pak", 141580516380901376L)};
         manifest.description = "WhoReacted";
-        manifest.version = "0.1.1";
+        manifest.version = "0.1.2";
         manifest.description = "See the avatars of the users who reacted to a message.";
         manifest.updateUrl = "https://raw.githubusercontent.com/js6pak/aliucord-plugins/builds/updater.json";
         return manifest;
@@ -140,6 +140,8 @@ public class WhoReacted extends Plugin {
 
                             int x = 0;
 
+                            int avatarSize = (int) (layout.getChildAt(0).getHeight() * 1.1d);
+
                             for (User user : users.getUsers().values()) {
                                 if (x >= 5) {
                                     Chip chip = new Chip(layout.getContext());
@@ -148,7 +150,8 @@ public class WhoReacted extends Plugin {
                                     chip.setChipBackgroundColor(ColorStateList.valueOf(ColorCompat.getThemedColor(chip, com.lytefast.flexinput.R.b.colorBackgroundTertiary)));
 
                                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, -1);
-                                    params.setMargins(-16, -16, 0, -16);
+                                    int chipSize = avatarSize / 4;
+                                    params.setMargins(-16, -chipSize, 0, -chipSize);
                                     chip.setLayoutParams(params);
                                     layout.addView(chip);
 
@@ -159,7 +162,6 @@ public class WhoReacted extends Plugin {
                                 SimpleDraweeView simpleDraweeView = new SimpleDraweeView(layout.getContext());
                                 simpleDraweeView.getHierarchy().r(roundingParams); // setRoundingParams
 
-                                final int avatarSize = 64;
                                 simpleDraweeView.setMinimumWidth(avatarSize);
                                 simpleDraweeView.setMinimumHeight(avatarSize);
                                 IconUtils.setIcon(simpleDraweeView, user);
