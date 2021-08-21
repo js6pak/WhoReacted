@@ -50,7 +50,7 @@ subprojects {
         val discord by configurations
 
         discord("com.discord:discord:88202")
-        api("com.github.js6pak:Aliucord:gradle-plugin-SNAPSHOT")
+        api("com.github.Aliucord:Aliucord:0300fa7f1b")
     }
 }
 
