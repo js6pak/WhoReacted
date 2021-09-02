@@ -89,7 +89,7 @@ public class ValidUser extends Plugin {
                             if (resultBlocking.second != null) {
                                 if (resultBlocking.second instanceof HttpException && ((HttpException) resultBlocking.second).a() == 404) {
                                     invalidUsers.add(userId);
-                                    setInvalidUser(context, callFrame, spannableStringBuilder, userId);
+                                    setInvalidUser(renderContext.getContext(), callFrame, spannableStringBuilder, userId);
                                     return;
                                 }
 
