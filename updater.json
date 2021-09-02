@@ -1,12 +1,1 @@
-{
-  "default": {
-    "minimumDiscordVersion": 80202,
-    "build": "https://raw.githubusercontent.com/js6pak/aliucord-plugins/builds/%s.zip"
-  },
-  "WhoReacted": {
-    "version": "0.1.2"
-  },
-  "ValidUser": {
-    "version": "0.1.0"
-  }
-}
+{"ValidUser":{"minimumDiscordVersion":89108,"version":"0.1.1","build":"https://raw.githubusercontent.com/js6pak/aliucord-plugins/builds/%s.zip","changelog":"* Fixed user fetching\n* Replicating the desktop behaviour, `<@!{user.id}>` is now displayed instead of `@invalid-user`"},"WhoReacted":{"minimumDiscordVersion":89108,"version":"0.1.3","build":"https://raw.githubusercontent.com/js6pak/aliucord-plugins/builds/%s.zip","changelog":"* Ported to kotlin\n* Updated to discord 89.8"}}
