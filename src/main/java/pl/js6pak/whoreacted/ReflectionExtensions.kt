@@ -1,5 +1,5 @@
 /*
- * aliucord-plugins
+ * WhoReacted
  * Copyright (C) 2021 js6pak
  *
  * This program is free software: you can redistribute it and/or modify
