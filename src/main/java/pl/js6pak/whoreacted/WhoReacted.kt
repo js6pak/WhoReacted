@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
+
 package pl.js6pak.whoreacted
 
 import android.annotation.SuppressLint
@@ -22,6 +23,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Handler
 import android.os.Looper
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout
 import com.aliucord.Logger
 import com.aliucord.annotations.AliucordPlugin
@@ -45,6 +47,10 @@ import java.util.concurrent.atomic.AtomicReference
 
 @AliucordPlugin
 class WhoReacted : Plugin() {
+    init {
+        settingsTab = SettingsTab(WhoReactedSettings::class.java).withArgs(this)
+    }
+
     override fun start(context: Context) {
         val logger = Logger(getName())
 
@@ -97,7 +103,7 @@ class WhoReacted : Plugin() {
                         val avatarSize = (layout.getChildAt(0).height * 1.1).toInt()
 
                         for (user in users.users.values) {
-                            if (x >= 5) {
+                            if (x >= settings.maxUsers) {
                                 val chip = Chip(layout.context)
 
                                 @SuppressLint("SetTextI18n")
@@ -109,9 +115,14 @@ class WhoReacted : Plugin() {
                                     )
                                 )
 
-                                val params = LinearLayout.LayoutParams(-1, -1)
+                                val params = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
                                 val chipSize = avatarSize / 4
-                                params.setMargins(-16, -chipSize, 0, -chipSize)
+                                params.setMargins(
+                                    if (settings.maxUsers > 0) -16 else 16,
+                                    -chipSize,
+                                    0,
+                                    -chipSize
+                                )
                                 chip.layoutParams = params
 
                                 chip.setOnClickListener {
@@ -136,7 +147,7 @@ class WhoReacted : Plugin() {
                             simpleDraweeView.minimumHeight = avatarSize
                             IconUtils.setIcon(simpleDraweeView, user)
 
-                            val params = LinearLayout.LayoutParams(-1, -1)
+                            val params = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
                             params.setMargins(if (x == 0) 16 else -16, 0, 0, 0)
                             simpleDraweeView.layoutParams = params
                             layout.addView(simpleDraweeView)

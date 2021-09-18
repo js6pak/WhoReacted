@@ -1,2 +1,2 @@
-* Improve the chance of surviving discord updates
-* Open reactions page on +(number) chip click
+* Improved the chance of surviving discord updates
+* Added user count setting
