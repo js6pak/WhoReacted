@@ -35,6 +35,7 @@ import com.discord.utilities.color.ColorCompat
 import com.discord.utilities.icon.IconUtils
 import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemReactions
 import com.discord.widgets.chat.list.entries.ReactionsEntry
+import com.discord.widgets.chat.managereactions.WidgetManageReactions
 import com.facebook.drawee.view.SimpleDraweeView
 import com.google.android.material.chip.Chip
 import com.lytefast.flexinput.R
@@ -112,6 +113,16 @@ class WhoReacted : Plugin() {
                                 val chipSize = avatarSize / 4
                                 params.setMargins(-16, -chipSize, 0, -chipSize)
                                 chip.layoutParams = params
+
+                                chip.setOnClickListener {
+                                    WidgetManageReactions.create(
+                                        message.channelId,
+                                        message.id,
+                                        layout.context,
+                                        messageReaction
+                                    )
+                                }
+
                                 layout.addView(chip)
 
                                 break
