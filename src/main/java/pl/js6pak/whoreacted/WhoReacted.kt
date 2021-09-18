@@ -23,8 +23,6 @@ import android.content.res.ColorStateList
 import android.os.Handler
 import android.os.Looper
 import android.widget.LinearLayout
-import c.a.y.a0
-import c.f.g.f.c
 import com.aliucord.Logger
 import com.aliucord.annotations.AliucordPlugin
 import com.aliucord.entities.Plugin
@@ -68,18 +66,18 @@ class WhoReacted : Plugin() {
 
                 var i = 0
                 for (messageReaction in message.reactions) {
-                    if (messageReaction.a() >= 100) {
+                    if (messageReaction.count >= 100) {
                         logger.verbose("skipped reaction had too much users")
                         continue
                     }
 
-                    val a0Var = binding.d.getChildAt(i++) as a0
+                    val reactionView = binding.chatListItemReactions.getChildAt(i++) as ReactionView
                     val store: StoreMessageReactions = StoreStream.getMessageReactions()
                     val reactions = store.reactions
 
                     val refresh = refresh@{ users: StoreMessageReactions.EmojiResults.Users ->
-                        val c1Var = a0Var.l
-                        val layout = c1Var.root as LinearLayout
+                        val reactionViewBinding = reactionView.binding
+                        val layout = reactionViewBinding.root as LinearLayout
 
                         if (layout.childCount > 2) {
                             layout.removeViews(2, layout.childCount - 2)
@@ -90,8 +88,8 @@ class WhoReacted : Plugin() {
                             return@refresh
                         }
 
-                        val roundingParams = c() // RoundingParams
-                        roundingParams.b = true // setRoundAsCircle
+                        val roundingParams = RoundingParams()
+                        roundingParams.mRoundAsCircle = true
 
                         var x = 0
 
@@ -121,7 +119,7 @@ class WhoReacted : Plugin() {
 
                             // TODO figure out how to apply this mask: https://discord.com/assets/2ad33adc723eef7837aa4432d8b8e1be.svg
                             val simpleDraweeView = SimpleDraweeView(layout.context)
-                            simpleDraweeView.hierarchy.s(roundingParams) // setRoundingParams
+                            simpleDraweeView.hierarchy.setRoundingParams(roundingParams)
 
                             simpleDraweeView.minimumWidth = avatarSize
                             simpleDraweeView.minimumHeight = avatarSize
@@ -141,10 +139,10 @@ class WhoReacted : Plugin() {
                     if (reactions.containsKey(message.id)) {
                         val messageReactions = reactions[message.id]
                         if (messageReactions != null && messageReactions.containsKey(
-                                messageReaction.b().c()
+                                messageReaction.emoji.id
                             )
                         ) {
-                            results = messageReactions[messageReaction.b().c()]
+                            results = messageReactions[messageReaction.emoji.id]
                         }
                     }
 
@@ -154,12 +152,12 @@ class WhoReacted : Plugin() {
                             StoreStream.getMessageReactions().observeMessageReactions(
                                 message.channelId,
                                 message.id,
-                                messageReaction.b()
+                                messageReaction.emoji
                             ).subscribe(
                                 RxUtils.createActionSubscriber(
                                     { result: StoreMessageReactions.EmojiResults? ->
                                         if (result is StoreMessageReactions.EmojiResults.Users) {
-                                            if (result.channelId != message.channelId || result.component3() != message.id || result.emoji != messageReaction.b()) {
+                                            if (result.channelId != message.channelId || result.component3() != message.id || result.emoji != messageReaction.emoji) {
                                                 return@createActionSubscriber
                                             }
 

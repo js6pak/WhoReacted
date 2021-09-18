@@ -1,1 +1,1 @@
-* Switched to the correct repo structure
+* Improve the chance of surviving discord updates
