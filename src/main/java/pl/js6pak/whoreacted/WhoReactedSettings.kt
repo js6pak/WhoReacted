@@ -23,6 +23,7 @@ import android.content.res.ColorStateList
 import android.text.Editable
 import android.text.InputType
 import android.view.View
+import android.view.ViewGroup
 import com.aliucord.api.SettingsAPI
 import com.aliucord.fragments.SettingsPage
 import com.aliucord.views.TextInput
@@ -48,25 +49,21 @@ class WhoReactedSettings(private val plugin: WhoReacted) : SettingsPage() {
 
         val ctx = view.context
 
-        TextInput(ctx).run {
-            hint = "Max users shown"
+        TextInput(ctx, "Max users shown", plugin.settings.maxUsers.toString()).layout.run {
             helperText = "The maximum number of users shown per reaction between 0 and 20"
 
             editText?.run {
                 maxLines = 1
-                setText(
-                    plugin.settings.maxUsers.toString()
-                )
                 inputType = InputType.TYPE_CLASS_NUMBER
 
-                setHelperTextTextAppearance(R.h.UiKit_TextAppearance_MaterialEditText_Label)
+                setHelperTextTextAppearance(R.i.UiKit_TextAppearance_MaterialEditText_Label)
                 setHelperTextColor(
-                    ColorStateList.valueOf(
-                        ColorCompat.getThemedColor(
-                            context,
-                            R.b.colorHeaderSecondary
+                        ColorStateList.valueOf(
+                                ColorCompat.getThemedColor(
+                                        context,
+                                        R.b.colorHeaderSecondary
+                                )
                         )
-                    )
                 )
 
                 val editText = this
@@ -88,6 +85,7 @@ class WhoReactedSettings(private val plugin: WhoReacted) : SettingsPage() {
                 })
             }
 
+            (this.parent as ViewGroup).removeView(this) // huh?
             linearLayout.addView(this)
         }
     }

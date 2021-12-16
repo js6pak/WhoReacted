@@ -4,7 +4,7 @@ plugins {
     id("com.aliucord.gradle")
 }
 
-version = "0.2.0"
+version = "0.2.1"
 description = "See the avatars of the users who reacted to a message."
 
 aliucord {

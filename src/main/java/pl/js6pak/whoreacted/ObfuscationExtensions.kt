@@ -19,7 +19,7 @@
 package pl.js6pak.whoreacted
 
 import androidx.viewbinding.ViewBinding
-import c.a.y.a0
+import c.a.y.b0
 import com.discord.api.message.reaction.MessageReaction
 import com.discord.api.message.reaction.MessageReactionEmoji
 import com.discord.databinding.WidgetChatListAdapterItemReactionsBinding
@@ -39,10 +39,10 @@ val MessageReactionEmoji.id: String
 val WidgetChatListAdapterItemReactionsBinding.chatListItemReactions: FlexboxLayout
     get() = this.d
 
-typealias ReactionView = a0
+typealias ReactionView = b0
 
 private val bindingField: Field =
-    ReactionView::class.java.getDeclaredField("l")
+        ReactionView::class.java.getDeclaredField("m")
         .apply { isAccessible = true }
 
 val ReactionView.binding: ViewBinding

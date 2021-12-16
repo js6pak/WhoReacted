@@ -28,7 +28,7 @@ import android.widget.LinearLayout
 import com.aliucord.Logger
 import com.aliucord.annotations.AliucordPlugin
 import com.aliucord.entities.Plugin
-import com.aliucord.patcher.PinePatchFn
+import com.aliucord.patcher.Hook
 import com.aliucord.utils.RxUtils
 import com.aliucord.utils.RxUtils.subscribe
 import com.discord.stores.StoreMessageReactions
@@ -41,8 +41,8 @@ import com.discord.widgets.chat.managereactions.WidgetManageReactions
 import com.facebook.drawee.view.SimpleDraweeView
 import com.google.android.material.chip.Chip
 import com.lytefast.flexinput.R
+import de.robv.android.xposed.XC_MethodHook
 import rx.Subscription
-import top.canyie.pine.Pine.CallFrame
 import java.util.concurrent.atomic.AtomicReference
 
 @AliucordPlugin
@@ -59,17 +59,17 @@ class WhoReacted : Plugin() {
                 "processReactions",
                 ReactionsEntry::class.java
             ),
-            PinePatchFn patch@{ callFrame: CallFrame ->
-                val binding = (callFrame.thisObject as WidgetChatListAdapterItemReactions).binding
-                val reactionsEntry = callFrame.args[0] as ReactionsEntry
-                val message = reactionsEntry.message
+                Hook patch@{ callFrame: XC_MethodHook.MethodHookParam ->
+                    val binding = (callFrame.thisObject as WidgetChatListAdapterItemReactions).binding
+                    val reactionsEntry = callFrame.args[0] as ReactionsEntry
+                    val message = reactionsEntry.message
 
-                logger.verbose("processReactions started (reactionsEntry: {$reactionsEntry})")
+                    logger.verbose("processReactions started (reactionsEntry: {$reactionsEntry})")
 
-                if (message.reactions.size > 10) {
-                    logger.verbose("skipped because message had too much reaction emojis")
-                    return@patch
-                }
+                    if (message.reactions.size > 10) {
+                        logger.verbose("skipped because message had too much reaction emojis")
+                        return@patch
+                    }
 
                 var i = 0
                 for (messageReaction in message.reactions) {
