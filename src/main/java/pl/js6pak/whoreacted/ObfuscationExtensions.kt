@@ -1,6 +1,6 @@
 /*
  * WhoReacted
- * Copyright (C) 2021 js6pak
+ * Copyright (C) 2022 js6pak
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,8 +42,7 @@ inline val WidgetChatListAdapterItemReactionsBinding.chatListItemReactions: Flex
 typealias ReactionView = b0
 
 private val bindingField: Field =
-        ReactionView::class.java.getDeclaredField("m")
-        .apply { isAccessible = true }
+    ReactionView::class.java.getDeclaredField("m").apply { isAccessible = true }
 
 val ReactionView.binding: ViewBinding
     get() = bindingField[this] as ViewBinding

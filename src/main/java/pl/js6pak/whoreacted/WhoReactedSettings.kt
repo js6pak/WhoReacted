@@ -1,6 +1,6 @@
 /*
  * WhoReacted
- * Copyright (C) 2021 js6pak
+ * Copyright (C) 2022 js6pak
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,12 +58,12 @@ class WhoReactedSettings(private val plugin: WhoReacted) : SettingsPage() {
 
                 setHelperTextTextAppearance(R.i.UiKit_TextAppearance_MaterialEditText_Label)
                 setHelperTextColor(
-                        ColorStateList.valueOf(
-                                ColorCompat.getThemedColor(
-                                        context,
-                                        R.b.colorHeaderSecondary
-                                )
+                    ColorStateList.valueOf(
+                        ColorCompat.getThemedColor(
+                            context,
+                            R.b.colorHeaderSecondary
                         )
+                    )
                 )
 
                 val editText = this

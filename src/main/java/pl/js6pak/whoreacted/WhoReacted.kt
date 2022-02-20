@@ -1,6 +1,6 @@
 /*
  * WhoReacted
- * Copyright (C) 2021 js6pak
+ * Copyright (C) 2022 js6pak
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,17 +56,17 @@ class WhoReacted : Plugin() {
                 "processReactions",
                 ReactionsEntry::class.java
             ),
-                Hook patch@{ callFrame: XC_MethodHook.MethodHookParam ->
-                    val binding = (callFrame.thisObject as WidgetChatListAdapterItemReactions).binding
-                    val reactionsEntry = callFrame.args[0] as ReactionsEntry
-                    val message = reactionsEntry.message
+            Hook patch@{ callFrame: XC_MethodHook.MethodHookParam ->
+                val binding = (callFrame.thisObject as WidgetChatListAdapterItemReactions).binding
+                val reactionsEntry = callFrame.args[0] as ReactionsEntry
+                val message = reactionsEntry.message
 
-                    logger.verbose("processReactions started (reactionsEntry: {$reactionsEntry})")
+                logger.verbose("processReactions started (reactionsEntry: {$reactionsEntry})")
 
-                    if (message.reactions.size > 10) {
-                        logger.verbose("skipped because message had too much reaction emojis")
-                        return@patch
-                    }
+                if (message.reactions.size > 10) {
+                    logger.verbose("skipped because message had too much reaction emojis")
+                    return@patch
+                }
 
                 var i = 0
                 for (messageReaction in message.reactions) {
