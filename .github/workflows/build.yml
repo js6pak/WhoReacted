@@ -43,7 +43,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          draft: true
+          draft: false
+          body_path: CHANGELOG.md
           files: |
             build/*.zip
             build/updater.json
