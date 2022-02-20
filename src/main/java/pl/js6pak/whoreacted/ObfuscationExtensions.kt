@@ -19,7 +19,7 @@
 package pl.js6pak.whoreacted
 
 import androidx.viewbinding.ViewBinding
-import c.a.y.b0
+import b.a.y.b0
 import com.discord.api.message.reaction.MessageReaction
 import com.discord.api.message.reaction.MessageReactionEmoji
 import com.discord.databinding.WidgetChatListAdapterItemReactionsBinding
@@ -27,16 +27,16 @@ import com.facebook.drawee.generic.GenericDraweeHierarchy
 import com.google.android.flexbox.FlexboxLayout
 import java.lang.reflect.Field
 
-val MessageReaction.count: Int
+inline val MessageReaction.count: Int
     get() = this.a()
 
-val MessageReaction.emoji: MessageReactionEmoji
+inline val MessageReaction.emoji: MessageReactionEmoji
     get() = this.b()
 
-val MessageReactionEmoji.id: String
+inline val MessageReactionEmoji.id: String
     get() = this.c()
 
-val WidgetChatListAdapterItemReactionsBinding.chatListItemReactions: FlexboxLayout
+inline val WidgetChatListAdapterItemReactionsBinding.chatListItemReactions: FlexboxLayout
     get() = this.d
 
 typealias ReactionView = b0
@@ -48,7 +48,7 @@ private val bindingField: Field =
 val ReactionView.binding: ViewBinding
     get() = bindingField[this] as ViewBinding
 
-typealias RoundingParams = c.f.g.f.c
+typealias RoundingParams = b.f.g.f.c
 
 var RoundingParams.mRoundAsCircle: Boolean
     get() = this.b

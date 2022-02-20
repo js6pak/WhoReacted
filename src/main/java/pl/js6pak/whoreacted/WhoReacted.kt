@@ -25,7 +25,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout
-import com.aliucord.Logger
 import com.aliucord.annotations.AliucordPlugin
 import com.aliucord.entities.Plugin
 import com.aliucord.patcher.Hook
@@ -52,8 +51,6 @@ class WhoReacted : Plugin() {
     }
 
     override fun start(context: Context) {
-        val logger = Logger(getName())
-
         patcher.patch(
             WidgetChatListAdapterItemReactions::class.java.getDeclaredMethod(
                 "processReactions",

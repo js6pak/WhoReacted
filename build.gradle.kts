@@ -4,7 +4,7 @@ plugins {
     id("com.aliucord.gradle")
 }
 
-version = "0.2.1"
+version = "0.2.2"
 description = "See the avatars of the users who reacted to a message."
 
 aliucord {
@@ -25,15 +25,19 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
 
 repositories {
     google()
     mavenCentral()
-    maven("https://jitpack.io")
+    maven("https://maven.aliucord.com/snapshots")
 }
 
 dependencies {
     discord("com.discord:discord:aliucord-SNAPSHOT")
-    api("com.github.Aliucord:Aliucord:main-SNAPSHOT")
+    api("com.aliucord:Aliucord:main-SNAPSHOT")
 }
