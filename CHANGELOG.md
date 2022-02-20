@@ -1,1 +1,1 @@
-* Update to latest Aliucord
+* Update to discord 115.4 (@Juby210)
