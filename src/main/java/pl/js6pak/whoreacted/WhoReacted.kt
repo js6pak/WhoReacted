@@ -34,6 +34,7 @@ import com.discord.stores.StoreMessageReactions
 import com.discord.stores.StoreStream
 import com.discord.utilities.color.ColorCompat
 import com.discord.utilities.icon.IconUtils
+import com.discord.views.ReactionView
 import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemReactions
 import com.discord.widgets.chat.list.entries.ReactionsEntry
 import com.discord.widgets.chat.managereactions.WidgetManageReactions

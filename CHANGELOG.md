@@ -1,1 +1,1 @@
-* Update to discord 115.4 (@Juby210)
+* Update to discord 120.11
